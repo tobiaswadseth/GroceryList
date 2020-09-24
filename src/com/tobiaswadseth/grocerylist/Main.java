@@ -4,10 +4,6 @@ import com.tobiaswadseth.grocerylist.categories.*;
 
 import java.util.Scanner;
 
-/*
-    TODO: ADD DESCRIPTIVE COMMENTS
- */
-
 public class Main {
 
     private static Scanner scanner;
@@ -36,7 +32,9 @@ public class Main {
 
         String input = scanner.nextLine();
 
+        // Check if the users choice is an integer
         if (isInt(input)) {
+            // Convert the string of the users choice to an integer for the main menu
             int choice = Integer.parseInt(input);
             if (choice == 1) {
                 viewItems();
@@ -63,6 +61,7 @@ public class Main {
             } else {
                 mainMenu();
             }
+            // Allows for the user to see what is printed out before returning to the main menu. (User must press enter after every performed action to return to the main menu)
             System.out.println("\nPress enter to return to the Main Menu!");
             scanner.nextLine();
         }
@@ -71,6 +70,7 @@ public class Main {
     private static void editItem() {
         System.out.println("\nPlease enter the ID of the product you would like to edit!");
         String indexS = scanner.nextLine();
+        // After printing out all the items with their IDs the user selects one
 
         if (isInt(indexS)) {
             int index = Integer.parseInt(indexS);
@@ -114,6 +114,7 @@ public class Main {
                         System.out.println("Successfully updated product!");
                         return;
                     } else if (choice == 3) {
+                        // Edit bought state
                         item.setBought(!item.isBought());
                         System.out.println("Successfully updated product!");
                         return;
@@ -132,6 +133,7 @@ public class Main {
     private static void removeItem() {
         System.out.println("\nPlease enter the ID of the product you would like to remove!");
         String indexS = scanner.nextLine();
+        // After printing out all the items with their IDs the user selects one
 
         if (isInt(indexS)) {
             int index = Integer.parseInt(indexS);
@@ -146,6 +148,7 @@ public class Main {
         removeItem();
     }
 
+    // Prints out all the items or "The Grocery List is empty!" if its empty.
     private static void viewItems() {
         if (groceryList.getItemList().isEmpty()) {
             System.out.println("\nThe Grocery List is empty!\n");
@@ -153,8 +156,11 @@ public class Main {
         groceryList.getItemList().forEach(item -> System.out.println(getItemInfo(item, true)));
     }
 
+    // Returns a string containing all the info for an item. Allows for viewing indexes of the items as well
     private static String getItemInfo(Item item, boolean index) {
-        String category = "";
+        String category;
+
+        category = item instanceof Dairy ? "🧀" : "None";
         if (item instanceof Dairy) {
             category = "🧀";
         } else if (item instanceof Egg) {
@@ -174,6 +180,8 @@ public class Main {
         return "----\nName: " + item.getItem() + " | Category: " + category + "\nAmount: " + item.getAmount() + " | Priority: " + item.getPriority() + "\n ought: " + (item.isBought() ? "Yes" : "No") + "\n----\n";
     }
 
+    // Main code for adding items to the grocery list.
+    // Very repetitive so far because of the different categories
     private static void addItem() {
         System.out.println("\nPlease choose category!");
         System.out.println("Dairy, Egg, Fish, Fruit, Meat, Vegetable");
